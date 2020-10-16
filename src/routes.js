@@ -17,6 +17,6 @@ routes.post('/sessions', SessionController.store);
 routes.use(authMiddleware);
 
 routes.post('/files', upload.single('file'), FileController.store);
-routes.get('/files', FileController.index);
+routes.get('/getfiles', FileController.index);
 
 export default routes;
