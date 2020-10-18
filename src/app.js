@@ -14,11 +14,11 @@ class App {
 
   middlewares() {
     this.server.use(express.json());
+    this.server.use(cors());
     this.server.use(
-      '/files',
+      '/getfiles',
       express.static(path.resolve(__dirname, '..', 'tmp', 'uploads'))
     );
-    this.server.use(cors());
 
     // Be very careful using cors, due to safety reasons.
     // If using this, make sure to only use it when in local development mode.
