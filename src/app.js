@@ -19,9 +19,6 @@ class App {
       '/files',
       express.static(path.resolve(__dirname, '..', 'tmp', 'uploads'))
     );
-
-    // Be very careful using cors, due to safety reasons.
-    // If using this, make sure to only use it when in local development mode.
   }
 
   routes() {

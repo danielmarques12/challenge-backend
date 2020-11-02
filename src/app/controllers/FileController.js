@@ -1,16 +1,31 @@
+import PDFKit from 'pdfkit';
+import fs from 'fs';
+import crypto from 'crypto';
 import File from '../models/File';
 import User from '../models/User';
 
 class FileController {
   async store(request, response) {
-    const { originalname: name, filename: path } = request.file;
+    const { transcription, time } = request.body;
 
+    const pdf = new PDFKit();
+    pdf.text(transcription);
+
+    const path = `${crypto.randomBytes(12).toString('hex')}.pdf`;
+    pdf.pipe(
+      fs.createWriteStream(
+        `/home/daniel/Documents/challenge/backend/tmp/uploads/${path}`
+      )
+    );
+    pdf.end();
+
+    const name = `${time}.pdf`;
     const user_id = request.userId;
 
     const file = await File.create({
       user_id,
-      name,
       path,
+      name,
     });
 
     return response.json(file);
@@ -32,6 +47,21 @@ class FileController {
     });
 
     return response.json(files_reponse);
+  }
+
+  async show(request, response) {
+    const { time } = request.body;
+
+    const file = await File.findOne({
+      where: { user_id: request.userId, name: `${time}.pdf` },
+    });
+
+    const { name, url } = file;
+
+    return response.json({
+      name,
+      url,
+    });
   }
 }
 
