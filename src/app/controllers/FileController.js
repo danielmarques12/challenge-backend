@@ -9,6 +9,13 @@ class FileController {
     const { transcription, time } = request.body;
 
     const pdf = new PDFKit();
+
+    // const pdfData = Object.keys(transcription).map((index) =>
+    //   JSON.parse(transcription[Number(index)])
+    // );
+
+    // console.log(pdfData);
+
     pdf.text(transcription);
 
     const path = `${crypto.randomBytes(12).toString('hex')}.pdf`;
